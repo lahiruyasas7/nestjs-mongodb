@@ -4,11 +4,13 @@ import {
   Get,
   HttpException,
   Param,
+  Patch,
   Post,
 } from '@nestjs/common';
 import { UserService } from './users.service';
 import { CreateUserDto } from './dto/CreateUser.dto';
 import mongoose from 'mongoose';
+import { UpdateUserDto } from './dto/UpdateUser.dto';
 
 @Controller('users')
 export class UserController {
@@ -34,5 +36,19 @@ export class UserController {
       throw new HttpException('user not found', 404);
     }
     return findUser;
+  }
+
+  @Patch('update/:id')
+  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) {
+      throw new HttpException('id not valid', 400);
+    }
+    const updatedUser = this.userService.updateUser(id, updateUserDto);
+
+    if (!updatedUser) {
+      throw new HttpException('User not found', 404);
+    }
+    return updatedUser;
   }
 }
