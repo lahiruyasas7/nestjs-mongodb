@@ -1,15 +1,20 @@
-import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { UserSettings } from './UserSettings.schema';
+import mongoose from 'mongoose';
 
 @Schema()
 export class User {
-@Prop({unique: true, required: true})
-userName: string;
+  @Prop({ unique: true, required: true })
+  userName: string;
 
-@Prop({required: false})
-displayName: string
+  @Prop({ required: false })
+  displayName: string;
 
-@Prop({required: false})
-avatarUrl: string
+  @Prop({ required: false })
+  avatarUrl: string;
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'UserSettings' })
+  settings?: UserSettings;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User)
+export const UserSchema = SchemaFactory.createForClass(User);
