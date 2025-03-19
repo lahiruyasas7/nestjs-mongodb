@@ -14,15 +14,15 @@ export class UserService {
     private UserSettingsModel: Model<UserSettings>,
   ) {}
 
-  async creteUser({settings, ...createUserDto}: CreateUserDto) {
-    if (settings){
+  async creteUser({ settings, ...createUserDto }: CreateUserDto) {
+    if (settings) {
       const newSettings = new this.UserSettingsModel(settings);
       const savedNewSettings = await newSettings.save();
       const newUser = new this.userModel({
         ...createUserDto,
         settings: savedNewSettings._id,
-      })
-      newSettings.save();
+      });
+      return newUser.save();
     }
     const newUser = new this.userModel(createUserDto);
     return newUser.save();
