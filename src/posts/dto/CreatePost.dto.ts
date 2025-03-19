@@ -10,4 +10,8 @@ export class CreatePostDto {
     @IsNotEmpty()
     @MaxLength(100)
     content: string;
+
+    @IsString()
+    @IsNotEmpty()
+    userId : string
 }
